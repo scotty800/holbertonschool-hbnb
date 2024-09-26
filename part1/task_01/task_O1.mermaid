@@ -1,6 +1,6 @@
 classDiagram
     class User {
-    - int UUid4 id
+    - UUID4 id
     - string first name
     - string last name
     - string email
@@ -8,29 +8,32 @@ classDiagram
     + bool verificationConnexion()
 }
     class Review {
+    - UUID4 id
     - string comment
     - string place
     - string user
-    - string rating
+    + rating
     + get_review()
+    + creat_message()
+    + update_message()
 }
 
 User -- Review : composition
 
 class Place {
+    - UUID4 id
     - string title
     - string description
     - sting price
     - string latitude
     - string longitude
     + get_review()
-    + creat_message()
-    + update_message()
     + get_picture()
 
 }
 
 class Amenity {
+    - UUID4 id
     + string name
     + string description
 
