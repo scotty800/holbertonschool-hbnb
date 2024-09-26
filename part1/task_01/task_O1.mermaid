@@ -1,0 +1,39 @@
+classDiagram
+    class User {
+    - int UUid4
+    - string first name
+    - string last name
+    - string email
+    - string password
+    + bool verificationConnexion()
+}
+    class Review {
+    - string comment
+    - string place
+    - string user
+    - string rating
+    + get_review()
+}
+
+User --o Review : composition
+
+class Place {
+    - string title
+    - string description
+    - sting price
+    - string latitude
+    - string longitude
+    + get_review()
+    + creat_message()
+    + update_message()
+    + get_picture()
+
+}
+
+class Amenity {
+    + string name
+    + string description
+
+}
+
+Place --o Amenity : Composotion
