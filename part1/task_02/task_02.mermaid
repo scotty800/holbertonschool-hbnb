@@ -4,7 +4,7 @@ participant API
 participant BusinessLogic
 participant Database
 
-User->>API: API Call (Register User)
+User->>API: Register User
 API->>BusinessLogic: Validate and Create a User
 BusinessLogic->>Database: Save user in Data
 Database-->>BusinessLogic: Confirm Save
