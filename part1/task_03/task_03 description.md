@@ -32,15 +32,15 @@ BusinessLogicLayer --> PersistenceLayer : Database Operations
 
 The class diagram illustrates the three-layer architecture of the HBB project:
 
-1- Presentation Layer:
+### 1- Presentation Layer:
 
 Exposes the ServiceAPI and interacts with the Business Logic Layer via the Facade Pattern, providing a simple interface for users or external services.
 
-2- Business Logic Layer:
+### 2- Business Logic Layer:
 
 Contains key entities such as User, Place, Review, and Amenity. It handles core application logic and communicates with the Persistence Layer for database operations.
 
-3- Persistence Layer:
+### 3- Persistence Layer:
 
 Manages database access through the DatabaseAccess class, ensuring data transactions are isolated from business logic.
 
@@ -138,7 +138,7 @@ BusinessLogic-->>API: Return Succes/Failure
 API-->>User: Return registration validation
 ```
 
-User Registration:
+### User Registration:
 
 The User sends a registration request to the API.
 The API forwards the request to the Business Logic layer to validate and create the user.
@@ -161,7 +161,7 @@ BusinessLogic-->>API: Return Succes/Failure
 API-->>User: Return Place creation validation
 ```
 
-Create New Place:
+### Create New Place:
 
 The User initiates a request to create a new place via the API.
 The API sends the request to the Business Logic, which validates and creates the place.
@@ -184,7 +184,7 @@ BusinessLogic-->>API: Return Data place
 API-->>User: Return displays a list of Places
 ```
 
-Request List of Places:
+### Request List of Places:
 
 The User requests a list of places through the API.
 The API communicates with the Business Logic to validate the request and retrieve the list.
