@@ -186,7 +186,7 @@ API-->>User: Return displays a list of Places
 
 ### Request List of Places:
 
-The User requests a list of places through the API.
+$ The User requests a list of places through the API.
 The API communicates with the Business Logic to validate the request and retrieve the list.
 The Business Logic queries the Database for the places.
 After fetching the data, the Database sends the list back to the Business Logic.
