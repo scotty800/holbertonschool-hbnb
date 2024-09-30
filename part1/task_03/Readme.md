@@ -192,7 +192,7 @@ The Business Logic queries the Database for the places.
 After fetching the data, the Database sends the list back to the Business Logic.
 The Business Logic returns the place data to the API, which then displays the list to the User.
 
-#Conclusion
+# Conclusion
 
 The sequence diagrams presented in this document outline the critical interactions between the User, API, Business Logic, and Database within the HBB project. Each operation, from user registration to creating new places and retrieving lists, illustrates a structured flow of data and validation, ensuring a seamless user experience. By clearly defining these interactions, we promote a robust architecture that supports maintainability, scalability, and ease of integration for future enhancements. This foundational design serves as a roadmap for developers and stakeholders, guiding the implementation of features in the HBB application.
 
