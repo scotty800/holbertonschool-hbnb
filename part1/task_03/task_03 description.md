@@ -108,18 +108,18 @@ Place "1" o-- "*" Amenity : Composotion
 ```
 ### Detailed Class Diagram overview
 
-User: Manages user data and handles login/verification. Users can write multiple reviews.
+- User: Manages user data and handles login/verification. Users can write multiple reviews.
 
-Review: Represents reviews with comments, ratings, and associated places.
+- Review: Represents reviews with comments, ratings, and associated places.
 
-Place: Describes a location, manages reviews, and links to amenities.
+- Place: Describes a location, manages reviews, and links to amenities.
 
-Amenity: Defines features of a place, with methods to create, update, and delete.
+- Amenity: Defines features of a place, with methods to create, update, and delete.
 
-Relationships:
+### Relationships:
 
-User → Review (composition).
-Place → Review (receives) and Place → Amenity (composition).
+- User → Review (composition).
+- Place → Review (receives) and Place → Amenity (composition).
 
 # Sequence Diagrams for API Calls
 
@@ -163,11 +163,11 @@ API-->>User: Return Place creation validation
 
 ### Create New Place:
 
-The User initiates a request to create a new place via the API.
-The API sends the request to the Business Logic, which validates and creates the place.
-The place data is saved in the Database.
-After receiving a confirmation, the Business Logic informs the API of the result.
-The API then returns the creation validation to the User.
+- The User initiates a request to create a new place via the API.
+- The API sends the request to the Business Logic, which validates and creates the place.
+- The place data is saved in the Database.
+- After receiving a confirmation, the Business Logic informs the API of the result.
+- The API then returns the creation validation to the User.
 
 ```mermaid
 sequenceDiagram
@@ -186,11 +186,11 @@ API-->>User: Return displays a list of Places
 
 ### Request List of Places:
 
-$ The User requests a list of places through the API.
-The API communicates with the Business Logic to validate the request and retrieve the list.
-The Business Logic queries the Database for the places.
-After fetching the data, the Database sends the list back to the Business Logic.
-The Business Logic returns the place data to the API, which then displays the list to the User.
+- The User requests a list of places through the API.
+- The API communicates with the Business Logic to validate the request and retrieve the list.
+- The Business Logic queries the Database for the places.
+- After fetching the data, the Database sends the list back to the Business Logic.
+- The Business Logic returns the place data to the API, which then displays the list to the User.
 
 # Conclusion
 
