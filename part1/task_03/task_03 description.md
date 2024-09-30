@@ -140,11 +140,11 @@ API-->>User: Return registration validation
 
 ### User Registration:
 
-The User sends a registration request to the API.
-The API forwards the request to the Business Logic layer to validate and create the user.
-The Business Logic then saves the user data in the Database.
-Upon confirmation from the Database, the Business Logic returns a success or failure response to the API.
-Finally, the API responds to the User with the registration validation outcome.
+- The User sends a registration request to the API.
+- The API forwards the request to the Business Logic layer to validate and create the user.
+- The Business Logic then saves the user data in the Database.
+- Upon confirmation from the Database, the Business Logic returns a success or failure response to the API.
+- Finally, the API responds to the User with the registration validation outcome.
 
 ```mermaid
 sequenceDiagram
