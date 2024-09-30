@@ -33,13 +33,13 @@ BusinessLogicLayer --> PersistenceLayer : Database Operations
 The class diagram illustrates the three-layer architecture of the HBB project:
 
 ### 1- Presentation Layer:
-Exposes the ServiceAPI and interacts with the Business Logic Layer via the Facade Pattern, providing a simple interface for users or external services.
+- Exposes the ServiceAPI and interacts with the Business Logic Layer via the Facade Pattern, providing a simple interface for users or external services.
 
 ### 2- Business Logic Layer:
-Contains key entities such as User, Place, Review, and Amenity. It handles core application logic and communicates with the Persistence Layer for database operations.
+- Contains key entities such as User, Place, Review, and Amenity. It handles core application logic and communicates with the Persistence Layer for database operations.
 
 ### 3- Persistence Layer:
-Manages database access through the DatabaseAccess class, ensuring data transactions are isolated from business logic.
+- Manages database access through the DatabaseAccess class, ensuring data transactions are isolated from business logic.
 
 The Facade Pattern and clear separation between layers promote maintainability and simplicity in the system’s design.
 
