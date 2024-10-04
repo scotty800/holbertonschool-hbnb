@@ -1,3 +1,1 @@
 Holbertonschool-Hbnb
-
-Testing.
