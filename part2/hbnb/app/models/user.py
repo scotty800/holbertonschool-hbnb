@@ -1,5 +1,5 @@
 from models.BaseModel import BaseModel
-class user(BaseModel):
+class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin=False):
         super().__init__()
         self.first_name = first_name

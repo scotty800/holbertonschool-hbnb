@@ -14,12 +14,12 @@ class Place(BaseModel):
         self.owner = self.validate_owner(owner)
         self.reviews = []  # List to store related reviews
         self.amenities = []  # List to store related amenities
-    
+
     def validate_title(self, title):
         if not title or not isinstance(title, str) or len(title) > 100:
             raise ValueError("The title of the place. Required, maximum length of 100 characters.")
         return title
-    
+
     def add_review(self, review):
         """Add a review to the place."""
         if not isinstance(review, Review):
@@ -36,22 +36,22 @@ class Place(BaseModel):
         if price <= 0:
             raise ValueError("The price per night for the place. Must be a positive value.")
         return price
-    
+
     def validate_latitude(self, latitude):
         if not (-90.0 <= latitude <= 90.0):
             raise ValueError("Latitude coordinate for the place location. Must be within the range of -90.0 to 90.0.")
         return latitude
-    
+
     def validate_longitude(self, longitude):
         if not (-180.0 <= longitude <= 180.0):
             raise ValueError("Longitude coordinate for the place location. Must be within the range of -180.0 to 180.0.")
         return longitude
-    
+
     def validate_owner(self, owner):
         if not isinstance(owner, User):
             raise ValueError("owns the place. This should be validated to ensure the owner exists.")
         return owner
-    
+
     def update(self, data):
         if 'price' in data:
             self.price = self.validate_price(data['price'])
