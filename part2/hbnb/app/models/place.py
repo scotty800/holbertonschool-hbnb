@@ -1,7 +1,6 @@
-from models.BaseModel import BaseModel
-from models.user import User
-from models.amenity import Amenity
-from models.review import Review
+from base_models import BaseModel
+from amenity import Amenity
+from review import Review
 
 class Place(BaseModel):
     def __init__(self, title, description, price, latitude, longitude, owner):
@@ -48,6 +47,7 @@ class Place(BaseModel):
         return longitude
 
     def validate_owner(self, owner):
+        from user import User
         if not isinstance(owner, User):
             raise ValueError("owns the place. This should be validated to ensure the owner exists.")
         return owner

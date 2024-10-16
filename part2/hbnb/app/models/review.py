@@ -1,6 +1,4 @@
-from models.BaseModel import BaseModel
-from models.place import Place
-from models.user import User
+from base_models import BaseModel
 from datetime import datetime
 
 class Review(BaseModel):
@@ -17,11 +15,13 @@ class Review(BaseModel):
         return rating
 
     def validate_place(self, place):
+        from place import Place
         if not isinstance(place, Place):
             raise ValueError("Place instance being reviewed. Must be validated to ensure the place exists.")
         return place
 
     def validate_user(self, user):
+        from user import User
         if not isinstance(user, User):
             raise ValueError("User instance of who wrote the review. Must be validated to ensure the user exists.")
         return user
