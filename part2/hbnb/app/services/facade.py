@@ -25,7 +25,6 @@ class HBnBFacade:
         return user
 
     def update_user(self, user_id, user_data):
-
         user = self.get_user(user_id)
         if not user:
             raise ValueError("User not found")

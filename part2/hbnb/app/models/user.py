@@ -18,10 +18,9 @@ class User(BaseModel):
         self.is_admin = is_admin
 
     def update(self, data):
-        if 'first_name' in data:
+        if 'first_name' in data:  # Ceci provoque l'erreur
             self.first_name = data['first_name']
         if 'last_name' in data:
             self.last_name = data['last_name']
         if 'email' in data and re.match(r"[^@]+@[^@]+\.[^@]+", data['email']):
             self.email = data['email']
-        super().update(data)
