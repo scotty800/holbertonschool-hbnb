@@ -1,4 +1,4 @@
-from base_models import BaseModel
+from ..models.base_models import BaseModel
 from datetime import datetime
 
 class Review(BaseModel):
