@@ -1,17 +1,17 @@
+![images (1)](https://github.com/user-attachments/assets/8406017c-c847-43fd-b88c-d5bc6c3c115f)
+
 # HBnB Application - Initial Project Setup
 
 ### Description
-Ce projet est une application basée sur Flask qui servira à gérer les utilisateurs, les lieux, les avis et les commodités (amenities) pour une plateforme de réservation de logements, semblable à Airbnb. Ce fichier README.md décrit la structure du projet et fournit des instructions pour configurer l'application.
+This project is a Flask-based application designed to manage users, places, reviews, and amenities for a lodging reservation platform, similar to Airbnb. This README.md file describes the project structure and provides instructions for setting up the application.
 
-Dans cette étape, nous avons mis en place la structure de base du projet, y compris les couches de Présentation (API), Logique Métier, et Persistance des données (en mémoire pour l'instant). La logique de stockage en mémoire sera remplacée par une base de données dans les étapes suivantes. Le modèle de conception Façade est également mis en place pour gérer les communications entre ces couches.
+In this stage, we’ve set up the basic project structure, including the Presentation layer (API), Business Logic, and Data Persistence (currently in memory). The in-memory storage logic will later be replaced with a database. The Facade design pattern is also implemented to manage communication between these layers.
 
-## Structure du Projet
-Le projet est organisé de manière modulaire en trois couches principales :
-
-Couches de Présentation (API)
-- Logique Métier
-- Persistance des Données (In-Memory Repository)
-- Voici l'arborescence des fichiers :
+## Project Structure
+The project is organized modularly into three main layers:
+Presentation Layer (API)
+Business Logic
+Data Persistence (In-Memory Repository)
 
 ```text
 hbnb/
@@ -43,23 +43,22 @@ hbnb/
 ├── README.md
 ```
 
-### Explication des dossiers :
-- app/ : Contient l'ensemble du code de l'application.
-    - api/ : Gère les points d'entrée API (routes). Les endpoints pour gérer les utilisateurs, les lieux, les avis et les commodités seront définis ici.
-    - models/ : Contient les classes représentant les objets métier (Utilisateur, Lieu, Avis, Commodité).
-    - services/ : Contient la classe HBnBFacade, qui centralise les interactions entre les différentes couches (API, Logique Métier, Persistance).
-    - persistence/ : Contient le dépôt de stockage en mémoire pour simuler la persistance des données avant d’utiliser une base de données réelle.
-- run.py : Fichier principal qui permet de lancer l'application Flask.
-- config.py : Fichier de configuration de l'application, incluant les variables d'environnement et les options de debug.
-- requirements.txt : Liste des bibliothèques Python nécessaires au projet (Flask, Flask-RESTx, etc.).
-- README.md : Ce fichier, qui fournit une description du projet et des instructions d'installation.
+### Folder Explanations:
+- `app`/ : Contains all the application codeon.
+    - `api`/ :Manages API entry points (routes). Endpoints for managing `users`, `places`, `reviews`, and `amenities` are defined here.
+    - `models`/ : Contains classes representing business objects (`User`, `Place`, `Review`, `Amenity`).
+    - `services`/ :Contains the HBnBFacade class, which centralizes interactions between the different layers (API, Business Logic, Persistence).
+    - `persistence`/ :  Contains the in-memory storage repository to simulate data persistence before using a real database.
+- `run.py` : Main file to launch the Flask application.
+- `config.py` : Application configuration file, including environment variables and debug options.
+- `requirements.txt` :List of Python libraries required for the project (Flask, Flask-RESTx, etc.).
+- `README.md` : This file, which provides a project description and installation instructions.
 
-## Prérequis
-Avant de pouvoir exécuter l'application, assurez-vous d'avoir installé les éléments suivants :
+## Prerequisites
+Before running the application, make sure you have the following installed:
 
 - Python 3.x
-- pip (le gestionnaire de paquets Python)
-Installation
+-pip (the Python package manager)
 ### 1. Clonez le dépôt :
 ```
 
@@ -68,51 +67,52 @@ cd hbnb
 
 ```
 
-### 2. Installez les dépendances :
+### 2. Install dependencies: :
 
-Utilisez le fichier requirements.txt pour installer les bibliothèques nécessaires :
+Use the requirements.txt file to install the necessary libraries:
 ```
     pip install -r requirements.txt
 
 ```
 
 ## Configuration
-Le fichier `config.py` contient la configuration de base de l'application. Actuellement, il utilise une clé secrète par défaut et active le mode debug pour l'environnement de développement. Vous pouvez ajuster ces paramètres en fonction de vos besoins.
+The `config.py` file contains the application’s basic configuration. Currently, it uses a default secret key and enables debug mode for the development environment. You can adjust these settings as needed.
 
-## Lancer l'application
+## Running the Application
 
-1. Démarrez l'application Flask en exécutant la commande suivante :
-python run.py
+1. Start the Flask application by running the following command:
 
-2. Accédez à l'application :
+2. Access the application:
 
-Ouvrez votre navigateur et allez à l'adresse suivante pour voir l'application en cours d'exécution :
+Open your browser and go to the following address to see the application running:
 ```
 http://127.0.0.1:5000
 ```
 
-À ce stade, il n'y a pas encore de routes définies, mais l'application est prête à être développée.
+At this stage, no routes are defined yet, but the application is ready for development.
 
-## Fonctionnalités
-- Organisation modulaire : La structure du projet suit une architecture modulaire, facilitant la gestion et l’ajout de nouvelles fonctionnalités.
-- Modèle Façade : Simplifie les interactions entre les couches (API, logique métier, persistance).
-- Dépôt en mémoire : Permet de stocker temporairement des objets avant l'intégration d'une base de données.
+## Features
+- Modular Organization: The project structure follows a modular architecture, facilitating the management and addition of new features..
+- Facade Pattern: Simplifies interactions between the layers (API, business logic, persistence)..
+- In-Memory Repository: Allows temporary storage of objects before integrating a database.
 
 ## Prochaines Étapes
-- Ajouter les routes de l'API pour gérer les utilisateurs, les lieux, les avis, et les commodités.
-- Implémenter les fonctionnalités CRUD dans le dépôt en mémoire.
-- Remplacer le dépôt en mémoire par une base de données réelle (SQLAlchemy) dans la prochaine étape du projet.
-- Ajouter des tests pour valider le bon fonctionnement de l'API.
+- Add API routes to manage users, places, reviews, and amenities.
+- Implement CRUD functionalities in the in-memory repository.
+- Replace the in-memory repository with a real database (SQLAlchemy) in the next project stage.
+- Add tests to validate API functionality.
 
 ## Ressources
-- Documentation Flask
-- Documentation Flask-RESTx
-- Meilleures pratiques pour structurer un projet Python
-- Modèle de conception Façade
+- [Flask Documentation](https://flask.palletsprojects.com/en/stable/)
+- [Flask-RESTx Documentation](https://flask-restx.readthedocs.io/en/latest/)
+- [Best Practices for Structuring a Python Project](https://docs.python-guide.org/writing/structure/)
+- [Facade Design Pattern](https://refactoring.guru/design-patterns/facade/python/example)
 
 ## Auteurs
 
+[Yannis Ranguin](https://github.com/Yannis95200)
 
+[Scotty Ndanga](https://github.com/scotty800)
 
-
+[Antonin Noyelle](https://github.com/Ninotna)
 
