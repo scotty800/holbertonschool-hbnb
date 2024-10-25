@@ -41,11 +41,9 @@ class ReviewList(Resource):
             list_review = facade.get_all_reviews()
             if not list_review:
                 return {'message': 'No reviews found'}, 200
-        # Retourner la liste des reviews
             return {'reviews': list_review}, 200
 
         except Exception as e:
-        # Gestion des erreurs inattendues
             return {'error': 'An unexpected error occurred'}, 500
 
 @api.route('/<review_id>')
