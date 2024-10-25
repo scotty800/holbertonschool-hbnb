@@ -5,13 +5,8 @@ This project is a Flask-based application designed to manage users, places, revi
 
 In this stage, we’ve set up the basic project structure, including the Presentation layer (API), Business Logic, and Data Persistence (currently in memory). The in-memory storage logic will later be replaced with a database. The Facade design pattern is also implemented to manage communication between these layers.
 
-Dans cette étape, nous avons mis en place la structure de base du projet, y compris les couches de Présentation (API), Logique Métier, et Persistance des données (en mémoire pour l'instant). La logique de stockage en mémoire sera remplacée par une base de données dans les étapes suivantes. Le modèle de conception Façade est également mis en place pour gérer les communications entre ces couches.
-
 ## Project Structure
 The project is organized modularly into three main layers:
-
-The project is organized modularly into three main layers:
-
 Presentation Layer (API)
 Business Logic
 Data Persistence (In-Memory Repository)
@@ -47,15 +42,15 @@ hbnb/
 ```
 
 ### Folder Explanations:
-- app/ : Contains all the application codeon.
-    - api/ :Manages API entry points (routes). Endpoints for managing users, places, reviews, and amenities are defined here.
-    - models/ : Contains classes representing business objects (User, Place, Review, Amenity).
-    - services/ :Contains the HBnBFacade class, which centralizes interactions between the different layers (API, Business Logic, Persistence).
-    - persistence/ :  Contains the in-memory storage repository to simulate data persistence before using a real database.
-- run.py : Main file to launch the Flask application.
-- config.py : Application configuration file, including environment variables and debug options.
-- requirements.txt :List of Python libraries required for the project (Flask, Flask-RESTx, etc.).
-- README.md : This file, which provides a project description and installation instructions.
+- `app`/ : Contains all the application codeon.
+    - `api`/ :Manages API entry points (routes). Endpoints for managing `users`, `places`, `reviews`, and `amenities` are defined here.
+    - `models`/ : Contains classes representing business objects (`User`, `Place`, `Review`, `Amenity`).
+    - `services`/ :Contains the HBnBFacade class, which centralizes interactions between the different layers (API, Business Logic, Persistence).
+    - `persistence`/ :  Contains the in-memory storage repository to simulate data persistence before using a real database.
+- `run.py` : Main file to launch the Flask application.
+- `config.py` : Application configuration file, including environment variables and debug options.
+- `requirements.txt` :List of Python libraries required for the project (Flask, Flask-RESTx, etc.).
+- `README.md` : This file, which provides a project description and installation instructions.
 
 ## Prerequisites
 Before running the application, make sure you have the following installed:
