@@ -1,5 +1,5 @@
 from app.persistence.repository import InMemoryRepository
-import logging 
+import uuid 
 
 class HBnBFacade:
     def __init__(self):
@@ -9,77 +9,103 @@ class HBnBFacade:
         self.amenity_repo = InMemoryRepository()
     
     def create_user(self, user_data):
-        logging.info(f"Attempting to create user with data: {user_data}")
         from app.models.user import User
         user = User(**user_data)
-        existing_user = self.user_repo.get_by_attribute('email', user.email)
-        if existing_user:
-            raise ValueError(f"Error: An user with email {user.email} already exists.")
         self.user_repo.add(user)
-        logging.info(f"User created successfully: {user}")
-        return user
+        return user.to_dict()
     
     def get_user(self, user_id):
-        logging.info(f"Attempting to retrieve user with ID: {user_id}")
-        user = self.user_repo.get(user_id)  # Implémentez cela selon votre logique
-        if not user:
-            logging.warning(f"User with ID {user_id} not found.")
-            raise ValueError("User not found")
-        logging.info(f"User retrieved: {user}")  # Log l'utilisateur récupéré
-        return user
+        print(f"DEBUG: Attempting to get user with ID façade: {user_id}")
+        user = self.user_repo.get(user_id)
+        if user:
+            print(f"DEBUG: User found: {user.to_dict()} get user")
+            user_dict = user.to_dict()
+            print(f"DEBUG: User found : {user_dict} get user")
+            print(f"DEBUG: User dict type: {type(user_dict)}")
+            return user_dict
+        else:
+            print(f"DEBUG: No user found with ID: {user_id}")
+            return None
 
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
 
-
     def get_all_user(self):
         users = self.user_repo.get_all()
-        logging.info("All users retrieved from the database.")
         return users
 
     def update_user(self, user_id, user_data):
-        logging.info(f"Attempting to update user with ID: {user_id} and data: {user_data}")
         user = self.get_user(user_id)
         if not user:
-            logging.error(f"User with ID {user_id} not found.")
             raise ValueError("User not found")
         self.user_repo.update(user_id, user_data)
-        logging.info(f"User updated successfully: {user}")
-        return user
-
+        print("DEBUG: User updated successfully")
+        updated_user = self.get_user(user_id)
+        return updated_user
     
+    def validate_request_data(self, data):
+        if 'name' not in data or not data['name']:
+            raise ValueError("The new name is required.")
+        if len(data['name']) > 50:
+            raise ValueError("The equipment name cannot exceed 50 characters.")
 
+    def create_amenity(self, amenity_data):
+        from app.models.amenity import Amenity
+        self.validate_request_data(amenity_data)
+        amenity = Amenity(**amenity_data) 
+        self.amenity_repo.add(amenity)
+        return amenity.to_dict()
+
+    def get_amenity(self, amenity_id):
+        return self.amenity_repo.get(amenity_id)
+    
+    def get_all_amenities(self):
+        return list(self.amenity_repo.get_all())
+
+    def update_amenity(self, amenity_id, amenity_data):
+        self.validate_request_data(amenity_data)
+        amenity = self.get_amenity(amenity_id)
+        
+        if 'name' in amenity_data:
+            amenity.name = amenity_data['name']
+            self.amenity_repo.update(amenity, amenity_data)
+            return amenity.to_dict()
+    ".............................................................................."
     def create_place(self, place_data):
-        logging.info(f"Attempting to create place with data: {place_data}")
-        
         from app.models.place import Place
-        required_keys = ['price', 'latitude', 'longitude', 'owner_id']
-        for key in required_keys:
-            if key not in place_data:
-                raise ValueError(f"Missing required field: {key}")
+        from app.models.user import User
 
-        price = place_data['price']
-        latitude = place_data['latitude']
-        longitude = place_data['longitude']
-        owner_id = place_data['owner_id']
+        print(f"DEBUG: Received place_data: {place_data}")
+        self.validate_place_data(place_data)
+
+        owner_id = place_data.get('owner_id')
+        print(f"DEBUG: Attempting to retrieve user with ID: {owner_id}")
+        user = self.get_user(owner_id)
+        if user is None:
+            print(f"DEBUG: User not found with ID façade: {owner_id}")
+            raise ValueError(f"User with ID {owner_id} not found.")
+        place_data['owner_id'] = user['id']
         
-        self.validate_place_data(price, latitude, longitude, owner_id)
-        owner = self.user_repo.get(owner_id)
-        if not owner:
-            logging.error(f"The owner specified with ID '{owner_id}' does not exist.")
-            raise ValueError(f"Error: The owner specified with ID '{owner_id}' does not exist.")
+        amenities_list = place_data.get('amenities', [])
+        valid_amenities = []
+        if isinstance(amenities_list, list):
+            for amenity_id in amenities_list:
+                amenity = self.amenity_repo.get(amenity_id)
+                if amenity is not None:
+                    valid_amenities.append(amenity)
+                else:
+                    print(f"DEBUG: Amenity not found with ID: {amenity_id}")
+                    raise ValueError(f"Amenity with ID {amenity_id} not found.")
         else:
-           logging.info(f"Owner found: {owner}")
-
-        try:
-            place = Place(**place_data)
-            self.place_repo.add(place, user_id=place_data['owner_id'])
-            logging.info(f"Place created successfully: {place}")
-            return place
-        except Exception as e:
-            logging.error(f"Failed to create place: {str(e)}")
-            raise ValueError(f"Failed to create place: {str(e)}")
-        
+            print("DEBUG: Amenities list is not a valid list.")
+            place_data['amenities'] = valid_amenities
+            place_id = str(uuid.uuid4())
+            place = Place(id=place_id, **place_data)
+            self.place_repo.add(place)
+            place_dict = place.to_dict()
+            print(f"DEBUG: Place dictionary before JSON serialization: {place_dict}")
+            return place_dict
+    
     def validate_place_data(self, price, latitude, longitude, owner_id):
         if not isinstance(price, float):
             try:
@@ -99,19 +125,15 @@ class HBnBFacade:
         place = self.place_repo.get(place_id)
         if place is None:
             raise ValueError("Place not found")
-        return place
+        return place.to_dict()
     
     def get_all_places(self):
         place = self.place_repo.get_all()
-        logging.info("All places retrieved from the database.")
-        return place
+        return [place.to_dict() for place in place]
     
     def update_place(self, place_id, place_data):
         place = self.get_place(place_id)
         for key, value in place_data.items():
-            setattr(place, key, value)  # Met à jour les attributs de l'objet
+            setattr(place, key, value) 
         self.place_repo.update(place_id, place)  
-        logging.info(f"Place updated successfully: {place}")
         return place
-    
-   

@@ -1,6 +1,6 @@
-from flask_restx import Namespace, Resource, fields
+from flask_restx import Namespace, Resource, fields, abort
 from app.services.facade import HBnBFacade
-import logging
+from flask import jsonify, request
 
 api = Namespace('places', description='Place operations')
 
@@ -24,7 +24,8 @@ place_model = api.model('Place', {
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's"),
+    'owner': fields.Nested(user_model, description='Owner details'),
+    'amenities': fields.List(fields.String, required=False, description="List of amenities ID's"),
 })
 
 facade = HBnBFacade()
@@ -38,34 +39,49 @@ class PlaceList(Resource):
     def post(self):
         """Register a new place"""
         place_data = api.payload
-        logging.info(f"Données de lieu reçues : {place_data}")
-        owner_id = place_data.get('owner_id')
-        logging.info(f"Tentative de création d'un lieu pour le propriétaire avec ID : {owner_id}")
-            # Vérifiez que l'utilisateur (owner) existe avant d'ajouter le lieu
+        print(f"Received place_data: {place_data}")
         try:
-            owner = facade.get_user(place_data['owner_id'])
-            if not owner:
-                logging.warning(f"Owner not found with ID: {owner_id}")
-                return {'error': 'Owner not found'}, 400
-        
-            new_place = facade.create_place(place_data)
-            logging.info(f"Place created successfully with ID: {new_place.id}")
-            return {"message": "Place created successfully", "id": new_place.id}, 201
-        except ValueError as ve:
-            logging.error(f"Invalid input data: {str(ve)}")
-            return {"error": f"Invalid input data: {str(ve)}"}, 400
+            required_fields = ['owner_id', 'title', 'description', 'price', 'latitude', 'longitude', 'amenities']
+            for field in required_fields:
+                if field not in place_data:
+                    print(f"Missing field: {field}")
+                    return {'error': f'Missing field: {field}'}, 400
+                owner_id = place_data['owner_id']
+                print(f"Attempting to retrieve owner with ID: {owner_id}")
+                owner = facade.get_user(owner_id)
+                if owner is None:
+                    print(f"User not found with ID api place: {owner_id}")
+                    return {'error': 'User not found api'}, 404
+                print(f"Owner found: {owner}")
+                if not owner.get('is_owner', False):
+                    print(f"Permission denied for user ID: {owner_id}")
+                    return {'error': 'Permission denied: user is not an owner'}, 403
+                new_place = facade.create_place(place_data)
+                print(f"New place created: {new_place}")
+                if not isinstance(new_place, dict):
+                    print(f"Unexpected new_place format: {new_place}")
+                    return {'error': 'Unexpected error occurred while creating the place'}, 500
+                return {
+            'id': new_place.get('id'),
+            'title': new_place.get('title'),
+            'description': new_place.get('description'),
+            'price': new_place.get('price'),
+            'latitude': new_place.get('latitude'),
+            'longitude': new_place.get('longitude'),
+            'owner_id': new_place.get('owner_id'),
+            'amenities': new_place.get('amenities')
+            }, 201
         except Exception as e:
-            logging.error(f"Unexpected error: {str(e)}")
-            return {"error": f"Internal server error: {str(e)}"}, 500
-
+            print(f"Unexpected error: {str(e)}")
+            return {'error': 'Internal server error'}, 500
+        
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
         try:
             list_of_all_places = facade.get_all_places()
-            return [place for place in list_of_all_places], 200
+            return [place.to_dict() for place in list_of_all_places], 200
         except ValueError as e:
-            logging.error(f"Failed to retrieve places: {str(e)}")
             return {"error: list_of_all_places"},
 
 @api.route('/<place_id>')
@@ -74,32 +90,27 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get place details by ID"""
-        # Placeholder for the logic to retrieve a place by ID, including associated owner and amenities
         try:
             place = facade.get_place(place_id)
             if not place:
-                logging.warning(f"Place with ID {place_id} not found.")
                 return {"error": "Place not found"}, 404
-
-            # Prepare the response with place details
-            response = {
-                "id": place_id,
-                "title": place.title,
-                "description": place.description,
-                "price": place.price,
-                "latitude": place.latitude,
-                "longitude": place.longitude,
+            response_data = {
+                "id": place['id'],
+                "title": place['title'],
+                "description": place['description'],
+                "price": place['price'],
+                "latitude": place['latitude'],
+                "longitude": place['longitude'],
                 "owner": {
-                    "id": place.owner.id,
+                    "id": place['owner_id'],
                     "first_name": place.owner.first_name,
                     "last_name": place.owner.last_name,
                     "email": place.owner.email
                 },
-                "amenities": [amenity.id for amenity in place.amenities]  # Assuming amenities are objects
+                "amenities": [amenity.id for amenity in place.amenities]
             }
-            return response, 200
+            return response_data, 200
         except ValueError as ve:
-            logging.error(f"Error retrieving place details: {str(ve)}")
             return {"error": f"Unable to retrieve place: {str(ve)}"}, 500
 
     @api.expect(place_model)
@@ -108,13 +119,11 @@ class PlaceResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, place_id):
         """Update a place's information"""
-        # Placeholder for the logic to update a place by ID
         place_data = api.payload
         try:
-            update_place = facade.update_place(place_id, place_data)
-            if update_place is None:
+            updated_place = facade.update_place(place_id, place_data)
+            if updated_place is None:
                 return {"error": "Place not found"}, 404
             return {'Place updated successfully'}, 200
         except ValueError as ve:
-            logging.error(f"Invalid input data: {str(ve)}")
             return {"error": "invalid input data"}, 400

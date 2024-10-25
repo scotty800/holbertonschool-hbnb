@@ -4,14 +4,13 @@ from app.models.review import Review
 from app.persistence.repository import InMemoryRepository
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=None):
-        super().__init__()
+    def __init__(self, title, description, price, latitude, longitude, owner_id):
+        super().__init__() 
         self.title = self.validate_title(title)
         self.description = description
         self.price = self.validate_price(price)
         self.latitude = self.validate_latitude(latitude)
         self.longitude = self.validate_longitude(longitude)
-        self.user_repo = InMemoryRepository()
         if not isinstance(owner_id, str):
             raise ValueError("The owner ID must be provided and must be a string.")
         
@@ -21,8 +20,21 @@ class Place(BaseModel):
         
         self.owner_id = owner_id   # Validate if owner is provided as a User object
         self.reviews = []  # List to store related reviews
-        self.amenities = amenities if amenities is not None else []  # List to store related amenities
+        self.amenities = [] # List to store related amenities
 
+    def to_dict(self):
+        """Convert the object to a dictionary for JSON serialization."""
+        return {
+            "title": self.title,
+            "description": self.description,
+            "price": self.price,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "owner_id": self.owner_id,
+            "reviews": [review.to_dict() for review in self.reviews],
+            "amenities": [amenity.to_dict() for amenity in self.amenities]
+        }
+    
     def validate_title(self, title):
         if not title or not isinstance(title, str) or len(title) > 100:
             raise ValueError("The title of the place. Required, maximum length of 100 characters.")
@@ -54,12 +66,6 @@ class Place(BaseModel):
         if not (-180.0 <= longitude <= 180.0):
             raise ValueError("Longitude coordinate for the place location. Must be within the range of -180.0 to 180.0.")
         return longitude
-
-    """def validate_owner(self, owner):
-        from user import User
-        if not isinstance(owner, User):
-            raise ValueError("owns the place. This should be validated to ensure the owner exists.")
-        return owner"""
 
     def update(self, data):
         from app.persistence.repository import InMemoryRepository
