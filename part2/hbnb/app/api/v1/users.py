@@ -20,6 +20,7 @@ def is_valid_email(email):
     email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     return re.match(email_regex, email) is not None
 
+
 @api.route('/', methods=['POST'])
 class UserList(Resource):
     @api.expect(user_model, validate=True)
@@ -38,11 +39,10 @@ class UserList(Resource):
         if existing_user:
             return {'error': 'Email already registered'}, 400
 
-        if 'is_owner' not in user_data:
-                user_data['is_owner'] = False
+        user_data['is_owner'] = user_data.get('is_owner', False)
         try:
             new_user = facade.create_user(user_data)
-            return new_user, 201
+            return new_user.to_dict(), 201
         except ValueError as e:
             return {'error': str(e)}, 400
         except Exception as e:
@@ -57,15 +57,9 @@ class UserResource(Resource):
         try:
             user = facade.get_user(user_id)
             print("dictinnaire api user")
-            if user is None:
+            if not user:
                 return {'error': 'User not found'}, 404
-            return {
-                'id': user['id'],
-                'first_name': user.get('first_name', None),
-                'last_name': user.get('last_name', None),
-                'email': user.get('email', None),
-                'is_owner': user.get('is_owner', False)
-            }, 200
+            return user.to_dict(), 200
             
         except Exception as e:
             print(f'An unexpected error occurred: {e}')
@@ -85,9 +79,6 @@ class UserResource(Resource):
         
         user_data = request.get_json()
         user = facade.get_user(user_id)
-        
-        if not user:
-            return {"error": "User not found"}, 404
 
         if 'email' in user_data and not is_valid_email(user_data['email']):
             return {'error': 'Invalid email format'}, 400
@@ -110,10 +101,11 @@ class UserResource(Resource):
         
         print("dictionnaire update api user")
 
+        if not updated_user:
+            return {'error': 'User not found'}, 404
         return {
-           'id': updated_user.get('id'),
-           'first_name': updated_user.get('first_name', None),
-           'last_name': updated_user.get('last_name', None),
-           'email': updated_user.get('email', None),
-           'is_owner': updated_user.get('is_owner', False)
-           }, 200
+        'id': updated_user.id,
+        'first_name': updated_user.first_name,
+        'email': updated_user.email,
+        'last_name': updated_user.last_name
+        }, 200

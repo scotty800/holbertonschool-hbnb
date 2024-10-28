@@ -1,22 +1,17 @@
 from ..models.base_models import BaseModel
 from app.models.amenity import Amenity
 from app.models.review import Review
-from app.persistence.repository import InMemoryRepository
+import uuid
+from app.models.user import User
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner_id):
-        super().__init__() 
+    def __init__(self, id, title, description, price, latitude, longitude, owner_id):
+        super().__init__(id) 
         self.title = self.validate_title(title)
         self.description = description
         self.price = self.validate_price(price)
         self.latitude = self.validate_latitude(latitude)
         self.longitude = self.validate_longitude(longitude)
-        if not isinstance(owner_id, str):
-            raise ValueError("The owner ID must be provided and must be a string.")
-        
-        owner = self.user_repo.get(owner_id)
-        if not owner:
-            raise ValueError("Propriétaire avec l'ID fourni introuvable.")
         
         self.owner_id = owner_id   # Validate if owner is provided as a User object
         self.reviews = []  # List to store related reviews
@@ -25,6 +20,7 @@ class Place(BaseModel):
     def to_dict(self):
         """Convert the object to a dictionary for JSON serialization."""
         return {
+            "id": self.id,
             "title": self.title,
             "description": self.description,
             "price": self.price,
@@ -66,28 +62,27 @@ class Place(BaseModel):
         if not (-180.0 <= longitude <= 180.0):
             raise ValueError("Longitude coordinate for the place location. Must be within the range of -180.0 to 180.0.")
         return longitude
+    
+    @staticmethod
+    def validate_owner(owner):
+        if not isinstance(owner, User):
+            raise ValueError("Owner must be an instance of User.")
+        return owner.id
 
-    def update(self, data):
-        from app.persistence.repository import InMemoryRepository
-        self.user_repo = InMemoryRepository()
-        if 'title' in data:
-            self.title = self.validate_title(data['title'])
-        if 'description' in data:
-            self.description = data['description']  # La description peut être mise à jour sans validation supplémentaire
-        if 'price' in data:
-            self.price = self.validate_price(data['price'])
-        if 'latitude' in data:
-            self.latitude = self.validate_latitude(data['latitude'])
-        if 'longitude' in data:
-            self.longitude = self.validate_longitude(data['longitude'])
-        if 'owner_id' in data:
-            # Vérifier l'existence du propriétaire avant de mettre à jour
-            owner = self.user_repo.get(data['owner_id'])
-            if owner:
-                self.owner_id = owner.id
-            else:
-                raise ValueError("Propriétaire avec l'ID fourni introuvable.")
-        super().update(data)
+    def update(self, data: dict) -> 'Place':
+        for field in ['title', 'description', 'price', 'latitude', 'longitude']:
+            if field in data:
+                if field == 'title':
+                    self.title = self.validate_title(data[field])
+            elif field == 'description':
+                self.description = data[field]  # No validation needed
+            elif field == 'price':
+                self.price = self.validate_price(data[field])
+            elif field == 'latitude':
+                self.latitude = self.validate_latitude(data[field])
+            elif field == 'longitude':
+                self.longitude = self.validate_longitude(data[field])
+            return self
 
     def __repr__(self):
         return f"Place(title={self.title}, description={self.description}, price={self.price}, owner_id={self.owner_id})"

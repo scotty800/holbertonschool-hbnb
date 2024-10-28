@@ -39,38 +39,9 @@ class PlaceList(Resource):
     def post(self):
         """Register a new place"""
         place_data = api.payload
-        print(f"Received place_data: {place_data}")
         try:
-            required_fields = ['owner_id', 'title', 'description', 'price', 'latitude', 'longitude', 'amenities']
-            for field in required_fields:
-                if field not in place_data:
-                    print(f"Missing field: {field}")
-                    return {'error': f'Missing field: {field}'}, 400
-                owner_id = place_data['owner_id']
-                print(f"Attempting to retrieve owner with ID: {owner_id}")
-                owner = facade.get_user(owner_id)
-                if owner is None:
-                    print(f"User not found with ID api place: {owner_id}")
-                    return {'error': 'User not found api'}, 404
-                print(f"Owner found: {owner}")
-                if not owner.get('is_owner', False):
-                    print(f"Permission denied for user ID: {owner_id}")
-                    return {'error': 'Permission denied: user is not an owner'}, 403
-                new_place = facade.create_place(place_data)
-                print(f"New place created: {new_place}")
-                if not isinstance(new_place, dict):
-                    print(f"Unexpected new_place format: {new_place}")
-                    return {'error': 'Unexpected error occurred while creating the place'}, 500
-                return {
-            'id': new_place.get('id'),
-            'title': new_place.get('title'),
-            'description': new_place.get('description'),
-            'price': new_place.get('price'),
-            'latitude': new_place.get('latitude'),
-            'longitude': new_place.get('longitude'),
-            'owner_id': new_place.get('owner_id'),
-            'amenities': new_place.get('amenities')
-            }, 201
+            new_place = facade.create_place(place_data)
+            return new_place.to_dict(), 201
         except Exception as e:
             print(f"Unexpected error: {str(e)}")
             return {'error': 'Internal server error'}, 500

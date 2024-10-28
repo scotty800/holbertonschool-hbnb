@@ -15,6 +15,7 @@ class Amenity(BaseModel):
             raise ValueError("The new name cannot exceed 50 characters.")
         
         self.name = new_name
+        return self
 
 
     def to_dict(self):

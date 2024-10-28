@@ -3,8 +3,8 @@ from .base_models import BaseModel
 import uuid
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, is_admin=False, is_owner=False):
-        super().__init__()
+    def __init__(self, id, first_name, last_name, email, is_admin= False, is_owner= False):
+        super().__init__(id)
 
         if len(first_name) > 50:
             raise ValueError("First name should not exceed 50 characters")
@@ -13,7 +13,6 @@ class User(BaseModel):
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             raise ValueError("The email address is invalid")
         
-        self.id = str(uuid.uuid4())
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
@@ -30,6 +29,7 @@ class User(BaseModel):
             "is_admin": self.is_admin,
             "is_owner": self.is_owner
         }
+    
 
     def update(self, data):
         if not isinstance(data, dict):
@@ -49,6 +49,7 @@ class User(BaseModel):
             self.email = data['email']
         if 'is_owner' in data:
             self.is_owner = data['is_owner']
+        return self
 
     def __str__(self):
         return f"User({self.first_name} {self.last_name}, Email: {self.email}, Admin: {self.is_admin})"
