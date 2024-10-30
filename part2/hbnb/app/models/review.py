@@ -1,5 +1,4 @@
-from base_models import BaseModel
-from datetime import datetime
+from .base_models import BaseModel
 
 class Review(BaseModel):
     def __init__(self, text, rating, place, user):
