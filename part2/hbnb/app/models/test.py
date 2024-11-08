@@ -2,6 +2,7 @@ from user import User
 from place import Place
 from review import Review
 from amenity import Amenity
+
 def test_user_creation():
     user = User(first_name="John", last_name="Doe", email="john.doe@example.com")
     assert user.first_name == "John"

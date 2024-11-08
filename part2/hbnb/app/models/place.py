@@ -1,6 +1,9 @@
-from base_models import BaseModel
-from amenity import Amenity
-from review import Review
+from ..models.base_models import BaseModel
+from app.models.amenity import Amenity
+from app.models.review import Review
+from app.persistence.repository import InMemoryRepository
+
+
 
 class Place(BaseModel):
     def __init__(self, title, description, price, latitude, longitude, owner):
