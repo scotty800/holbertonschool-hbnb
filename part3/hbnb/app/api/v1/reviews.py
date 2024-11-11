@@ -20,7 +20,6 @@ class ReviewList(Resource):
             return {'error': 'You cannot review your own place'}, 400
         if facade.user_already_reviewed_place(current_user, place_id):
             return {'error': 'You have already reviewed this place'}, 400
-        # Logique pour créer un nouvel avis
         pass
 
 
@@ -32,7 +31,6 @@ class ReviewResource(Resource):
         review = facade.get_review(review_id)
         if review.user_id != current_user:
             return {'error': 'Unauthorized action'}, 403
-        # Logique pour mettre à jour l'avis
         pass
 
 
@@ -42,5 +40,4 @@ class ReviewResource(Resource):
         review = facade.get_review(review_id)
         if review.user_id != current_user:
             return {'error': 'Unauthorized action'}, 403
-        # Logique pour supprimer l'avis
         pass
