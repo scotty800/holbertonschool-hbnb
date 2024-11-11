@@ -4,12 +4,15 @@ from ..models.place import Place
 from ..models.review import Review
 from app.persistence.repository import SQLAlchemyRepository
 
+
 class HBnBFacade:
     def __init__(self):
         self.user_repo = SQLAlchemyRepository(User)
         self.place_repo = SQLAlchemyRepository(Place)
         self.review_repo = SQLAlchemyRepository(Review)
         self.amenity_repo = SQLAlchemyRepository(Amenity)
+        def __init__(self):
+            self.user_repo = SQLAlchemyRepository(User)
 
     def create_user(self, user_data):
         user = User(**user_data)
