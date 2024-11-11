@@ -1,11 +1,16 @@
 from flask import request, jsonify
 from app import db
 from models.user import User
-from flask import request, jsonify
 from app import create_app, db
 from models.user import User
-
+from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.services import facade
+from flask_restx import Api, Namespace
 app = create_app()
+api = Api(app)  # Initialise l'API avec l'application Flask
+user_ns = Namespace('users', description='User operations')  # Création d'un namespace pour les utilisateurs
+api.add_namespace(user_ns, path='/api/v1')
 
 @app.route('/api/v1/users/', methods=['POST'])
 def create_user():
@@ -33,3 +38,22 @@ def get_user(user_id):
     }
 
     return jsonify(user_data), 200
+
+
+@api.route('/users/<user_id>')
+class UserResource(Resource):
+    @jwt_required()
+    def put(self, user_id):
+        current_user = get_jwt_identity()
+        if current_user != user_id:
+            return {'error': 'Unauthorized action'}, 403
+        data = request.json
+        if 'email' in data or 'password' in data:
+            return {'error': 'You cannot change your email or password'}, 400
+        pass
+
+@api.route('/places/')
+class PublicPlaces(Resource):
+    def get(self):
+        pass
+
