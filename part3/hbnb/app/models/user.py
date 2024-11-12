@@ -2,7 +2,16 @@ import re
 from .base_models import BaseModel
 import uuid
 from flask_bcrypt import Bcrypt
+from app import db
 bcrypt = Bcrypt()
+
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    # autres champs et configurations
+
 
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin= False, is_owner= False):
@@ -60,3 +69,6 @@ class User(BaseModel):
     def verify_password(self, password):
         """Verify the password with the hashed password stored."""
         return bcrypt.check_password_hash(self.password, password)
+    
+
+
