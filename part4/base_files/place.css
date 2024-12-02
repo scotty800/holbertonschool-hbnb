@@ -1,0 +1,655 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url(5197214.jpg) no-repeat center center; /* Centre l'image */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(to right, hwb(25 52% 20%), #d7610c); /* Dégradé moderne */
+    color: white;
+    position: sticky; /* Header fixe au défilement */
+    top: -60;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    width: 100px;
+  margin-right: 100px;
+}
+
+header .login a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+
+.card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 100px;
+}
+
+.box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    width: 70vw;
+    max-width: 400px;
+    max-height: 500px;
+    background: rgba(234, 230, 225, 0.9); /* Légèrement transparent */
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px; /* Ajout d'un arrondi pour plus d'esthétique */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Ajout d'une ombre douce */
+}
+
+
+.box .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    color: hwb(28 18% 69%);
+    letter-spacing: 0.2rem;
+    padding: 20px;
+    text-align: center;
+}
+
+.box .content h1 {
+    font-size: clamp(1.7rem, 5vw, 2.1rem);
+    text-shadow: 0px 0px 10px #24242499;
+}
+
+.box .content p {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+}
+
+
+.box .glass{
+    position:  absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: block;
+    pointer-events: none;
+
+}
+
+.box::before,
+.box::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    z-index: -1;
+}
+
+.box:nth-child(1):before,
+.box:nth-child(1):after {
+    background: conic-gradient(from var(--angle), #e7970c, hwb(27 9% 25%), hsl(306, 67%, 66%), hsl(227, 45%, 90%), #bd43f6);
+}
+
+.box:nth-child(2):before,
+.box:nth-child(2):after {
+    background: conic-gradient(from var(--angle), #f35807, hsl(227, 39%, 74%), hwb(20 20% 19%), hsl(228, 36%, 86%), #f35807);
+}
+
+.box:nth-child(3):before,
+.box:nth-child(3):after {
+    background: conic-gradient(from var(--angle), #df4bc1, hsl(38, 51%, 77%), hsl(28, 86%, 47%), hsl(228, 34%, 80%), hwb(26 0% 0%));
+}
+
+.box::after {
+    z-index: -2;
+    filter: blur(20px);
+}
+
+.box:hover::before,
+.box:hover::after {
+    animation: glowing-border 3.5s linear infinite;
+}
+
+.box:hover::after {
+    animation: glowing-border 3.5s linear infinite, blur-effect 3.5s linear infinite;
+}
+
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 53deg;
+    inherits: false;
+}
+
+@keyframes glowing-border {
+    from {
+        --angle: 53deg;
+    }
+
+    to {
+        --angle: 413deg;
+    }
+}
+
+@keyframes blur-effect {
+    from {
+        filter: blur(20px);
+    }
+
+    to {
+        filter: blur(19px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .card {
+        gap: 80px;
+    }
+
+    .box {
+        width: 35vw;
+        height: 45vh;
+    }
+
+    .box .content h1 {
+        font-size: clamp(1.5rem, 5vw, 1.7rem);
+    }
+
+    .box .content p,
+    .box .content h3 {
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
+    }
+
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 12px;
+    }
+
+    .card {
+        gap: 40px;
+    }
+
+    .box {
+        width: 40vw;
+        height: 40vh;
+    }
+
+    .box .content {
+        padding: 10px 15px;
+    }
+
+    .box .content h1 {
+        font-size: clamp(1.3rem, 3vw, 1.4rem);
+    }
+
+    .box .content p,
+    .box .content h3 {
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .box {
+        width: 70vw;
+        height: 35vh;
+        padding: 10px;
+    }
+
+    .content {
+        gap: 5px;
+        padding: 10px;
+    }
+
+    .content h1 {
+        font-size: 1.3rem;
+    }
+
+    .content p,
+    .content h3 {
+        font-size: 1rem;
+    }
+}
+
+
+
+.place-details h1 {
+    color: orange;
+}
+
+.card2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 100px;
+}
+
+.box2{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 40vw;
+    max-width: 800px;
+    max-height: 400px;
+    background: rgb(234, 230, 225);
+    padding: 20px;
+    margin: 20px;
+}
+
+.box2 .content2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    color: hwb(28 18% 69%);
+    letter-spacing: 0.1rem;
+    padding: 20px;
+    text-align: center;
+}
+
+.box2 .content2 h1 {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    text-shadow: 0px 0px 10px #24242499;
+}
+
+.box2 .content2 p {
+    font-size: clamp(1rem, 0.2vw, 0.2rem);
+}
+
+
+.box2 .glass2{
+    position:  absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: block;
+    pointer-events: none;
+
+}
+
+.box2::before,
+.box2::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    z-index: -1;
+}
+
+.box2:nth-child(1):before,
+.box2:nth-child(1):after {
+    background: conic-gradient(from var(--angle), #e7970c, hwb(27 9% 25%), hsl(306, 67%, 66%), hsl(227, 45%, 90%), #bd43f6);
+}
+
+.box2:nth-child(2):before,
+.box2:nth-child(2):after {
+    background: conic-gradient(from var(--angle), #f35807, hsl(227, 39%, 74%), hwb(20 20% 19%), hsl(228, 36%, 86%), #f35807);
+}
+
+.box2:nth-child(3):before,
+.box2:nth-child(3):after {
+    background: conic-gradient(from var(--angle), #df4bc1, hsl(38, 51%, 77%), hsl(28, 86%, 47%), hsl(228, 34%, 80%), hwb(26 0% 0%));
+}
+
+.box2::after {
+    z-index: -2;
+    filter: blur(20px);
+}
+
+.box2:hover::before,
+.box2:hover::after {
+    animation: glowing-border 3.5s linear infinite;
+}
+
+.box2:hover::after {
+    animation: glowing-border 3.5s linear infinite, blur-effect 3.5s linear infinite;
+}
+
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 53deg;
+    inherits: false;
+}
+
+@keyframes glowing-border {
+    from {
+        --angle: 53deg;
+    }
+
+    to {
+        --angle: 413deg;
+    }
+}
+
+@keyframes blur-effect {
+    from {
+        filter: blur(20px);
+    }
+
+    to {
+        filter: blur(19px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .card2 {
+        gap: 80px;
+    }
+
+    .box2 {
+        width: 35vw;
+        height: 45vh;
+    }
+
+    .box2 .content2 h1 {
+        font-size: clamp(1.5rem, 5vw, 1.7rem);
+    }
+
+    .box2 .content2 p,
+    .box2 .content2 h3 {
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
+    }
+
+}
+
+@media (max-width: 768px) {
+    .container2 {
+        padding: 12px;
+    }
+
+    .card2 {
+        gap: 40px;
+    }
+
+    .box2 {
+        width: 40vw;
+        height: 40vh;
+    }
+
+    .box2 .content2 {
+        padding: 10px 15px;
+    }
+
+    .box2 .content2 h1 {
+        font-size: clamp(1.3rem, 3vw, 1.4rem);
+    }
+
+    .box2 .content2 p,
+    .box2 .content2 h3 {
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .box2 {
+        width: 70vw;
+        height: 35vh;
+        padding: 10px;
+    }
+
+    .content2 {
+        gap: 5px;
+        padding: 10px;
+    }
+
+    .content2 h1 {
+        font-size: 1.3rem;
+    }
+
+    .content2 p,
+    .content2 h3 {
+        font-size: 1rem;
+    }
+}
+
+
+
+.card3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 100px;
+}
+
+
+.box3{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 40vw;
+    max-width: 800px;
+    max-height: 400px;
+    background: rgb(234, 230, 225);
+    padding: 20px;
+    margin: 20px;
+}
+
+.box3 .content3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    color: hwb(28 18% 69%);
+    letter-spacing: 0.1rem;
+    padding: 20px;
+    text-align: center;
+}
+
+.box3 .content3 h1 {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    text-shadow: 0px 0px 10px #24242499;
+}
+
+.box3 .content3 p {
+    font-size: clamp(1rem, 0.2vw, 0.2rem);
+}
+
+
+.box3 .glass3{
+    position:  absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: block;
+    pointer-events: none;
+
+}
+
+.box3::before,
+.box3::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    z-index: -1;
+}
+
+.box3:nth-child(1):before,
+.box3:nth-child(1):after {
+    background: conic-gradient(from var(--angle), #e7970c, hwb(27 9% 25%), hsl(306, 67%, 66%), hsl(227, 45%, 90%), #bd43f6);
+}
+
+.box3:nth-child(2):before,
+.box3:nth-child(2):after {
+    background: conic-gradient(from var(--angle), #f35807, hsl(227, 39%, 74%), hwb(20 20% 19%), hsl(228, 36%, 86%), #f35807);
+}
+
+.box3:nth-child(3):before,
+.box3:nth-child(3):after {
+    background: conic-gradient(from var(--angle), #df4bc1, hsl(38, 51%, 77%), hsl(28, 86%, 47%), hsl(228, 34%, 80%), hwb(26 0% 0%));
+}
+
+.box3::after {
+    z-index: -2;
+    filter: blur(20px);
+}
+
+.box3:hover::before,
+.box3:hover::after {
+    animation: glowing-border 3.5s linear infinite;
+}
+
+.box3:hover::after {
+    animation: glowing-border 3.5s linear infinite, blur-effect 3.5s linear infinite;
+}
+
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 53deg;
+    inherits: false;
+}
+
+@keyframes glowing-border {
+    from {
+        --angle: 53deg;
+    }
+
+    to {
+        --angle: 413deg;
+    }
+}
+
+@keyframes blur-effect {
+    from {
+        filter: blur(20px);
+    }
+
+    to {
+        filter: blur(19px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .card3 {
+        gap: 80px;
+    }
+
+    .box3 {
+        width: 35vw;
+        height: 45vh;
+    }
+
+    .box3 .content3 h1 {
+        font-size: clamp(1.5rem, 5vw, 1.7rem);
+    }
+
+    .box3 .content3 p,
+    .box3 .content3 h3 {
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
+    }
+
+}
+
+@media (max-width: 768px) {
+    .container3 {
+        padding: 12px;
+    }
+
+    .card3 {
+        gap: 40px;
+    }
+
+    .box3 {
+        width: 40vw;
+        height: 40vh;
+    }
+
+    .box3 .content2 {
+        padding: 10px 15px;
+    }
+
+    .box3 .content3 h1 {
+        font-size: clamp(1.3rem, 3vw, 1.4rem);
+    }
+
+    .box3 .content3 p,
+    .box3 .content3 h3 {
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .box3 {
+        width: 70vw;
+        height: 35vh;
+        padding: 10px;
+    }
+
+    .content3 {
+        gap: 5px;
+        padding: 10px;
+    }
+
+    .content3 h1 {
+        font-size: 1.3rem;
+    }
+
+    .content3 p,
+    .content3 h3 {
+        font-size: 1rem;
+    }
+}
+
+footer {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    padding: 10px 20px;
+ background: linear-gradient(to right, hwb(25 52% 20%), #d7610c); /* Dégradé moderne */
+    color: white;
+    height: 50px;
+}
+
+.add-review {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.add-review button {
+    background-color: #ff9500;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-review button:hover {
+    background-color: #e88d00;
+}
